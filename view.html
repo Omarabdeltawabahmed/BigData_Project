@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display file : {{ doc_id }}</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      color: #000;
+    }
+
+    #bg-video,
+    .overlay {
+      display: none;
+    }
+
+    body.dark #bg-video,
+    body.dark .overlay {
+      display: block;
+    }
+
+    #bg-video {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+
+    body.dark {
+      background: transparent;
+      color: white;
+    }
+
+    .back-btn {
+      color: #4285F4;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    pre {
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    body.dark pre {
+      background: rgba(30,30,30,0.8);
+    }
+
+    mark {
+      background: yellow;
+    }
+  </style>
+</head>
+
+<body>
+
+  <video autoplay muted loop id="bg-video">
+    <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <a href="/" class="back-btn">← Back</a>
+  <h2>{{ doc_id }}</h2>
+
+  <div id="content-area">
+    <pre>{{ content }}</pre>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var context = document.querySelector("#content-area");
+      var instance = new Mark(context);
+      var keyword = "{{ query }}";
+
+      if (keyword) {
+        instance.mark(keyword);
+      }
+    });
+  </script>
+
+</body>
+</html>
